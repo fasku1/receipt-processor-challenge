@@ -1,7 +1,14 @@
 package com.fetch.app.receipt_processor_challenge.entities;
 import com.fetch.app.receipt_processor_challenge.entities.Item;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import java.util.UUID;
 
+@Entity
 public class Receipt {
+    @Id
+    private String id;
     // The name of the retailer or store the receipt is from.
     private String retailer;
     // The date of the purchase printed on the receipt.
@@ -12,7 +19,21 @@ public class Receipt {
     // The total amount paid on the receipt.
     private String total;
 
+    public Receipt() {
+        this.id = UUID.randomUUID().toString(); // Auto-generate the UUID
+    }
+
+    public void Receipt(){};
+
     // Getters and setters
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getRetailer() {
         return retailer;
     }

@@ -7,6 +7,8 @@ public class ReceiptProcessorChallengeController {
     public ReceiptProcessorChallengeController(){
     }
 
+
+
     @GetMapping("/public/hello")
     public String hello() {
         return ("hey");
