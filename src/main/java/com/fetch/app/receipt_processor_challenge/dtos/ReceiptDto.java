@@ -1,23 +1,24 @@
 package com.fetch.app.receipt_processor_challenge.dtos;
 
-import com.fetch.app.receipt_processor_challenge.entities.Item;
 import java.util.List;
+
+import com.fetch.app.receipt_processor_challenge.entities.Item;
 
 public class ReceiptDto {
     // The name of the retailer or store the receipt is from.
     private String retailer;
     // The date of the purchase printed on the receipt.
-    private String purhcaseDate;
+    private String purchaseDate;
     // The time of the purchase printed on the receipt. 24-hour time expected
-    private String purhcaseTime;
+    private String purchaseTime;
     private List<Item> items;
     // The total amount paid on the receipt.
     private String total;
 
-    public ReceiptDto(String retailer, String purhcaseDate, String purhcaseTime) {
+    public ReceiptDto(String retailer, String purchaseDate, String purchaseTime) {
         this.retailer = retailer;
-        this.purhcaseDate = purhcaseDate;
-        this.purhcaseTime = purhcaseTime;
+        this.purchaseDate = purchaseDate;
+        this.purchaseTime = purchaseTime;
     }
 
     public String getRetailer() {
@@ -28,20 +29,20 @@ public class ReceiptDto {
         this.retailer = retailer;
     }
 
-    public String getPurhcaseDate() {
-        return purhcaseDate;
+    public String getPurchaseDate() {
+        return purchaseDate;
     }
 
-    public void setPurhcaseDate(String purhcaseDate) {
-        this.purhcaseDate = purhcaseDate;
+    public void setPurchaseDate(String purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
 
-    public String getPurhcaseTime() {
-        return purhcaseTime;
+    public String getPurchaseTime() {
+        return purchaseTime;
     }
 
-    public void setPurhcaseTime(String purhcaseTime) {
-        this.purhcaseTime = purhcaseTime;
+    public void setPurchaseTime(String purhcaseTime) {
+        this.purchaseTime = purhcaseTime;
     }
 
 public List<Item> getItems() {
