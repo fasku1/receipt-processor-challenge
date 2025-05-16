@@ -1,45 +1,23 @@
-package com.fetch.app.receipt_processor_challenge.entities;
-import com.fetch.app.receipt_processor_challenge.entities.Item;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import java.util.UUID;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.FetchType;
+package com.fetch.app.receipt_processor_challenge.dtos;
 
+import com.fetch.app.receipt_processor_challenge.entities.Item;
 import java.util.List;
 
-@Entity
-public class Receipt {
-    @Id
-    private String id;
+public class ReceiptDto {
     // The name of the retailer or store the receipt is from.
     private String retailer;
     // The date of the purchase printed on the receipt.
     private String purhcaseDate;
     // The time of the purchase printed on the receipt. 24-hour time expected
     private String purhcaseTime;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "receipt_id") // optional: tells JPA to use a foreign key
     private List<Item> items;
     // The total amount paid on the receipt.
     private String total;
 
-    public Receipt() {
-        this.id = UUID.randomUUID().toString(); // Auto-generate the UUID
-    }
-
-    public void Receipt(){};
-
-    // Getters and setters
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public ReceiptDto(String retailer, String purhcaseDate, String purhcaseTime) {
+        this.retailer = retailer;
+        this.purhcaseDate = purhcaseDate;
+        this.purhcaseTime = purhcaseTime;
     }
 
     public String getRetailer() {
