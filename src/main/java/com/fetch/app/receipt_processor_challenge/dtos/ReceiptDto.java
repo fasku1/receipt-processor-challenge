@@ -15,10 +15,11 @@ public class ReceiptDto {
     // The total amount paid on the receipt.
     private String total;
 
-    public ReceiptDto(String retailer, String purchaseDate, String purchaseTime) {
+    public ReceiptDto(String retailer, String purchaseDate, String purchaseTime, List<Item> items) {
         this.retailer = retailer;
         this.purchaseDate = purchaseDate;
         this.purchaseTime = purchaseTime;
+        this.items = items;
     }
 
     public String getRetailer() {

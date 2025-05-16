@@ -1,15 +1,13 @@
 package com.fetch.app.receipt_processor_challenge.entities;
-import com.fetch.app.receipt_processor_challenge.entities.Item;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import java.util.UUID;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.FetchType;
-
 import java.util.List;
+import java.util.UUID;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Receipt {
@@ -18,17 +16,21 @@ public class Receipt {
     // The name of the retailer or store the receipt is from.
     private String retailer;
     // The date of the purchase printed on the receipt.
-    private String purhcaseDate;
+    private String purchaseDate;
     // The time of the purchase printed on the receipt. 24-hour time expected
-    private String purhcaseTime;
+    private String purchaseTime;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "receipt_id") // optional: tells JPA to use a foreign key
     private List<Item> items;
     // The total amount paid on the receipt.
     private String total;
 
-    public Receipt() {
+    public Receipt(String retailer, String purchaseDate, String purchaseTime, List<Item> items) {
         this.id = UUID.randomUUID().toString(); // Auto-generate the UUID
+        this.retailer = retailer;
+        this.purchaseDate = purchaseDate;
+        this.purchaseTime = purchaseTime;
+        this.items = items;
     }
 
     public void Receipt(){};
@@ -50,20 +52,20 @@ public class Receipt {
         this.retailer = retailer;
     }
 
-    public String getPurhcaseDate() {
-        return purhcaseDate;
+    public String getPurchaseDate() {
+        return purchaseDate;
     }
 
-    public void setPurhcaseDate(String purhcaseDate) {
-        this.purhcaseDate = purhcaseDate;
+    public void setPurchaseDate(String purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
 
-    public String getPurhcaseTime() {
-        return purhcaseTime;
+    public String getPurchaseTime() {
+        return purchaseTime;
     }
 
-    public void setPurhcaseTime(String purhcaseTime) {
-        this.purhcaseTime = purhcaseTime;
+    public void setPurchaseTime(String purchaseTime) {
+        this.purchaseTime = purchaseTime;
     }
 
 public List<Item> getItems() {
