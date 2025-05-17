@@ -4,6 +4,9 @@ import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Column;
+import org.hibernate.annotations.GenericGenerator;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -12,6 +15,9 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Receipt {
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(updatable = false, nullable = false)
     private String id;
     // The name of the retailer or store the receipt is from.
     private String retailer;
@@ -23,7 +29,10 @@ public class Receipt {
     @JoinColumn(name = "receipt_id") // optional: tells JPA to use a foreign key
     private List<Item> items;
     // The total amount paid on the receipt.
-    private String total;
+    private float total;
+
+    public Receipt() {
+    }
 
     public Receipt(String retailer, String purchaseDate, String purchaseTime, List<Item> items) {
         this.id = UUID.randomUUID().toString(); // Auto-generate the UUID
@@ -74,13 +83,19 @@ public List<Item> getItems() {
 
 public void setItems(List<Item> items) {
     this.items = items;
+    this.total = 0.0f;
+    if (items != null) {
+        for (Item item : items) {
+            this.total += item.getPrice();
+        }
+    }
 }
 
-    public String getTotal() {
+    public float getTotal() {
         return total;
     }
 
-    public void setTotal(String total) {
+    public void setTotal(float total) {
         this.total = total;
     }
 }
