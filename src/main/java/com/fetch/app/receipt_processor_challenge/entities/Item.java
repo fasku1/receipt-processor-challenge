@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Item {
@@ -14,8 +16,11 @@ public class Item {
     private String shortDescription;
     // The total price payed for this item.
     private float price;
+    @ManyToOne
+    @JoinColumn(name = "receipt_id")
+    private Receipt receipt;
     // Getters and setters
-    
+
     public String getShortDescription(){
         return shortDescription;
     }
