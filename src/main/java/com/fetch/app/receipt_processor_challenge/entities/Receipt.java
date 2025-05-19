@@ -2,15 +2,17 @@ package com.fetch.app.receipt_processor_challenge.entities;
 import java.util.List;
 import java.util.UUID;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Column;
 import org.hibernate.annotations.GenericGenerator;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Receipt {
@@ -18,12 +20,15 @@ public class Receipt {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(updatable = false, nullable = false)
-    private String id;
+    private UUID id;
     // The name of the retailer or store the receipt is from.
+    @NotNull(message = "retailer must not be null")
     private String retailer;
     // The date of the purchase printed on the receipt.
+    @NotNull
     private String purchaseDate;
     // The time of the purchase printed on the receipt. 24-hour time expected
+    @NotNull
     private String purchaseTime;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "receipt_id") // optional: tells JPA to use a foreign key
@@ -34,22 +39,22 @@ public class Receipt {
     public Receipt() {
     }
 
-    public Receipt(String retailer, String purchaseDate, String purchaseTime, List<Item> items) {
-        this.id = UUID.randomUUID().toString(); // Auto-generate the UUID
-        this.retailer = retailer;
-        this.purchaseDate = purchaseDate;
-        this.purchaseTime = purchaseTime;
-        this.items = items;
-    }
+    // public Receipt(String retailer, String purchaseDate, String purchaseTime, List<Item> items) {
+    //     this.id = UUID.randomUUID().toString(); // Auto-generate the UUID
+    //     this.retailer = retailer;
+    //     this.purchaseDate = purchaseDate;
+    //     this.purchaseTime = purchaseTime;
+    //     this.items = items;
+    // }
 
     public void Receipt(){};
 
     // Getters and setters
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

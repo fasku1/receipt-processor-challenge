@@ -2,6 +2,7 @@ package com.fetch.app.receipt_processor_challenge.controller_tests;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import com.fetch.app.receipt_processor_challenge.entities.Receipt;
 import com.fetch.app.receipt_processor_challenge.entities.Item;
@@ -43,6 +44,8 @@ class ReceiptControllerTest {
 
     private List<Item> items;
 
+    private UUID testReceiptId;
+
     /**
      * Creates data used for tests
      */
@@ -79,20 +82,22 @@ class ReceiptControllerTest {
 
         items = List.of(item1, item2, item3, item4, item5);
 
-        receipt.setId("temp");
+        testReceiptId = UUID.randomUUID();
+
+        receipt.setId(testReceiptId);
 
         when(receiptRepository.save(any(Receipt.class))).thenAnswer(invocation -> {
             Receipt receipt = invocation.getArgument(0);
             if (receipt.getId() == null) {
-                receipt.setId("temp");
+                receipt.setId(testReceiptId);
             }
             return receipt;
         });
 
-        when(receiptRepository.findById("temp")).thenReturn(Optional.of(receipt));
+        when(receiptRepository.findById(testReceiptId)).thenReturn(Optional.of(receipt));
 
         // **Add this to mock items returned by item repository**
-        when(itemRepository.findByReceiptId("temp")).thenReturn(items);
+        when(itemRepository.findByReceiptId(testReceiptId)).thenReturn(items);
     }
 
     /**
@@ -145,7 +150,8 @@ class ReceiptControllerTest {
     void testRealPointsComputation() throws Exception {
         receipt = receiptRepository.save(receipt);
         itemRepository.saveAll(items);
-        mockMvc.perform(get("/receipts/temp/points"))
+
+        mockMvc.perform(get("/receipts/" + testReceiptId + "/points"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("28"));
     }
