@@ -53,17 +53,18 @@ public class ReceiptProcessorChallengeController {
      * CREATED status
      */
     @PostMapping("/receipts/process")
-    public ResponseEntity<Receipt> processReceipts(@Valid @RequestBody Receipt receipt) {
-        // TODO: Handle error cases
-        receiptRepository.save(receipt);
-        return ResponseEntity.ok(receipt);
+    public ResponseEntity<String> processReceipts(@Valid @RequestBody Receipt receipt) {
+        // Save the receipt to the repository
+        Receipt savedReceipt = receiptRepository.save(receipt);
+        // Return the saved receipt's ID as a string
+        return ResponseEntity.ok(savedReceipt.getId().toString());
     }
-
 
     /**
      * Endpoint to add a new receipt to the system.
      *
-     * @param id takes in the input of the receipt id outputted after a receipt is made
+     * @param id takes in the input of the receipt id outputted after a receipt
+     * is made
      * @return an int that represents the total amount of points
      */
     @GetMapping("/receipts/{id}/points")
@@ -91,8 +92,8 @@ public class ReceiptProcessorChallengeController {
         if (total % 1.0 == 0) {
             logger.info("total is a round dollar amount; Points 50");
             points += 50;
-        } 
-        
+        }
+
         // 25 points if the total is a multiple of 0.25.
         if (total % 0.25 == 0) {
             logger.info("total is a multiple of 0.25; Points 25");
