@@ -105,35 +105,33 @@ class ReceiptControllerTest {
      */
     @Test
     void testProcessReceipts() throws Exception {
+        UUID mockId = UUID.randomUUID();
+
+        Receipt mockReceipt = new Receipt();
+        mockReceipt.setId(mockId);
+
+        when(receiptRepository.save(any(Receipt.class))).thenReturn(mockReceipt);
+
         String receiptJson = """
     {
       "retailer": "Target",
       "purchaseDate": "2022-01-01",
       "purchaseTime": "13:01",
       "items": [
-        {"shortDescription": "Mountain Dew 12PK", "price": "6.49"},
-        {"shortDescription": "Emils Cheese Pizza", "price": "12.25"},
-        {"shortDescription": "Knorr Creamy Chicken", "price": "1.26"},
-        {"shortDescription": "Doritos Nacho Cheese", "price": "3.35"},
-        {"shortDescription": "   Klarbrunn 12-PK 12 FL OZ  ", "price": "12.00"}
+        {
+          "shortDescription": "Mountain Dew 12PK",
+          "price": "6.49"
+        }
       ],
-      "total": "35.35"
+      "total": "6.49"
     }
     """;
-
-        // Simulate a UUID being returned
-        UUID fakeId = UUID.randomUUID();
-        when(receiptRepository.save(any(Receipt.class))).thenAnswer(invocation -> {
-            Receipt saved = invocation.getArgument(0);
-            saved.setId(fakeId); // Make sure the ID is set
-            return saved;
-        });
 
         mockMvc.perform(post("/receipts/process")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(receiptJson))
                 .andExpect(status().isOk())
-                .andExpect(content().string(fakeId.toString()));
+                .andExpect(jsonPath("$.id").value(mockId.toString()));
     }
 
     /**
@@ -146,6 +144,9 @@ class ReceiptControllerTest {
 
         mockMvc.perform(get("/receipts/" + testReceiptId + "/points"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("28"));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.points").value(28));
     }
+
+    // TODO: Error handling testing
 }

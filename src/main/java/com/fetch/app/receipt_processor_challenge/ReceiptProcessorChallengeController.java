@@ -2,7 +2,9 @@ package com.fetch.app.receipt_processor_challenge;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -53,11 +55,11 @@ public class ReceiptProcessorChallengeController {
      * CREATED status
      */
     @PostMapping("/receipts/process")
-    public ResponseEntity<String> processReceipts(@Valid @RequestBody Receipt receipt) {
-        // Save the receipt to the repository
+    public ResponseEntity<Map<String, String>> processReceipts(@Valid @RequestBody Receipt receipt) {
         Receipt savedReceipt = receiptRepository.save(receipt);
-        // Return the saved receipt's ID as a string
-        return ResponseEntity.ok(savedReceipt.getId().toString());
+        Map<String, String> response = new HashMap<>();
+        response.put("id", savedReceipt.getId().toString());
+        return ResponseEntity.ok(response);
     }
 
     /**
@@ -68,7 +70,7 @@ public class ReceiptProcessorChallengeController {
      * @return an int that represents the total amount of points
      */
     @GetMapping("/receipts/{id}/points")
-    public int getPoints(@PathVariable UUID id) {
+    public Map<String, Integer> getPoints(@PathVariable UUID id) {
         int points = 0; // default
 
         Receipt receipt = receiptRepository.findById(id)
@@ -140,6 +142,8 @@ public class ReceiptProcessorChallengeController {
             points += 10;
         }
 
-        return points;
+        Map<String, Integer> response = new HashMap<>();
+        response.put("points", points);
+        return response;
     }
 }
