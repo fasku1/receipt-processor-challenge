@@ -1,14 +1,27 @@
-# Use an official JDK runtime as a parent image
-FROM openjdk:17-jdk-slim
+FROM gradle:8.0.2-jdk17 AS builder
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Add the jar file to the container
-COPY build/libs/*.jar app.jar
+# Copy Gradle wrapper scripts and folder
+COPY gradlew .
+COPY gradle gradle
 
-# Expose the port your app runs on
+# Copy build scripts
+COPY build.gradle settings.gradle ./
+
+# Copy source code
+COPY src ./src
+
+# Build the jar inside the container using Gradle wrapper
+RUN ./gradlew build --no-daemon
+
+FROM openjdk:17-jdk-slim
+
+WORKDIR /app
+
+# Copy the jar from builder stage
+COPY --from=builder /app/build/libs/*.jar app.jar
+
 EXPOSE 8080
 
-# Run the jar file
 ENTRYPOINT ["java", "-jar", "app.jar"]

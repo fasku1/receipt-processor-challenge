@@ -9,6 +9,7 @@ This is a Spring Boot application that processes receipts and calculates reward 
 - Retrieve the calculated reward points for a given receipt.
 - Modular design with repository, service, and controller layers.
 - Unit and integration tests with JUnit and Mockito.
+- Data is stored in an embedded H2 database.
 
 ## How to run the application
 Ensure Docker is installed on your system

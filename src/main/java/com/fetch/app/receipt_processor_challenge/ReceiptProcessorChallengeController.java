@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,8 +41,6 @@ public class ReceiptProcessorChallengeController {
 
     public ReceiptProcessorChallengeController() {
     }
-
-    private static final Logger logger = LoggerFactory.getLogger(Receipt.class);
 
     /**
      * Endpoint to add a new receipt to the system.
@@ -85,25 +81,21 @@ public class ReceiptProcessorChallengeController {
             char character = retailer.charAt(i);
             boolean isLetter = Character.isLetter(character);
             if (isLetter) {
-                logger.info("Character: " + character + "; Points 1");
                 points++;
             }
         }
 
         // 50 points if the total is a round dollar amount with no cents.
         if (total % 1.0 == 0) {
-            logger.info("total is a round dollar amount; Points 50");
             points += 50;
         }
 
         // 25 points if the total is a multiple of 0.25.
         if (total % 0.25 == 0) {
-            logger.info("total is a multiple of 0.25; Points 25");
             points += 25;
         }
 
         // 5 points for every two items on the receipt.
-        logger.info("Whatever items * 5 points, " + Math.floor(items.size() / 2));
         points += Math.floor(items.size() / 2) * 5;
 
         // If the trimmed length of the item description is a multiple of 3, 
@@ -113,11 +105,7 @@ public class ReceiptProcessorChallengeController {
             String description = item.getShortDescription().trim();
             float price = item.getPrice();
             if ((description.length() != 0) && (description.length() % 3 == 0)) {
-                logger.info("description length: " + description.length());
-                logger.info("price*0.2: " + (price * 0.2));
-                logger.info("ceiling: " + (int) Math.ceil(price * 0.2));
                 int points_earned = (int) Math.ceil(price * 0.2);
-                logger.info("Length of description is divsible by 3, " + points_earned);
                 points += points_earned;
             }
         }
@@ -128,7 +116,6 @@ public class ReceiptProcessorChallengeController {
 
         boolean isOdd = day % 2 == 1;                                   // true if day is odd
         if (isOdd) {
-            logger.info("Date is odd, 6 points");
             points += 6;
         }
 
@@ -138,7 +125,6 @@ public class ReceiptProcessorChallengeController {
         LocalTime end = LocalTime.of(16, 0);                            // 4:00 PM
 
         if (purchaseTime.isAfter(start) && purchaseTime.isBefore(end)) {
-            logger.info("Time is between 2pm and 4pm, 10 points");
             points += 10;
         }
 
