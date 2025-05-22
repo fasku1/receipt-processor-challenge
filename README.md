@@ -20,3 +20,7 @@ First build the docker using the following command:
 After the docker is built you can run the application using the following command:
 
 - docker run -p 8080:8080 receipt-processor
+
+Use this URL to access the API 
+
+- http://localhost:8080
