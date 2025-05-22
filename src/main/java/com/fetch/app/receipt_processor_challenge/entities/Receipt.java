@@ -39,14 +39,6 @@ public class Receipt {
     public Receipt() {
     }
 
-    // public Receipt(String retailer, String purchaseDate, String purchaseTime, List<Item> items) {
-    //     this.id = UUID.randomUUID().toString(); // Auto-generate the UUID
-    //     this.retailer = retailer;
-    //     this.purchaseDate = purchaseDate;
-    //     this.purchaseTime = purchaseTime;
-    //     this.items = items;
-    // }
-
     public void Receipt(){};
 
     // Getters and setters
